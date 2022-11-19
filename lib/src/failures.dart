@@ -1,27 +1,37 @@
-/// Thrown when authorization has not yet been managed.
-/// Requires to tap on the allow button manually.
-class AuthorizationRequiredException implements Exception {
-  const AuthorizationRequiredException([this.message]);
+class InvalidAddressException implements Exception {
+  const InvalidAddressException([this.message]);
 
   final String? message;
 
   @override
   String toString() {
-    String content = 'AuthorizationRequiredException';
+    String content = 'InvalidAddressException';
     if (message != null) content = '$content: $message';
     return content;
   }
 }
 
-/// Thrown when unsupported platform is detected.
-class UnsupportedPlatformException implements Exception {
-  const UnsupportedPlatformException([this.message]);
+class InvalidAndroidException implements Exception {
+  const InvalidAndroidException([this.message]);
 
   final String? message;
 
   @override
   String toString() {
-    String content = 'UnsupportedPlatformException';
+    String content = 'InvalidAndroidException';
+    if (message != null) content = '$content: $message';
+    return content;
+  }
+}
+
+class InvalidConsentException implements Exception {
+  const InvalidConsentException([this.message]);
+
+  final String? message;
+
+  @override
+  String toString() {
+    String content = 'InvalidConsentException';
     if (message != null) content = '$content: $message';
     return content;
   }

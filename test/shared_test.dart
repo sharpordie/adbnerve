@@ -16,7 +16,7 @@ void main() {
   });
 
   tearDownAll(() async {
-    // await android.detach();
+    await android.detach();
   });
 
   test('accord()', () async {

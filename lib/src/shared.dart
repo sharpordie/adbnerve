@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:adbnerve/adbnerve.dart';
 import 'package:adbready/adbready.dart';
@@ -9,13 +10,16 @@ import 'package:path_provider/path_provider.dart';
 import 'package:xpath_selector/xpath_selector.dart';
 import 'package:xpath_selector_xml_parser/xpath_selector_xml_parser.dart';
 
-abstract class Common {
-  const Common(this.address, {this.port, this.code});
+abstract class Shared {
+  const Shared(this.address, {this.port, this.code});
 
+  ///
   final String address;
 
+  ///
   final String? code;
 
+  ///
   final String? port;
 
   Future<void> accord(String package, String consent) async {
@@ -25,19 +29,26 @@ abstract class Common {
   Future<void> attach() async {
     var content = (await invoke(['connect', address])).stdout;
     if (content.contains('cann')) {
-      throw Exception('Specified address is invalid');
+      // throw Exception('Specified address is invalid');
+      throw const InvalidAddressException('Submit address is invalid');
     } else if (content.contains('down')) {
-      throw Exception('Connected machine has not started yet');
+      // throw Exception('Connected machine has not started yet');
+      throw const InvalidAndroidException('Target machine is down');
     } else if (content.contains('empt')) {
-      throw Exception('Specified address is empty');
+      // throw Exception('Specified address is empty');
+      throw const InvalidAddressException('Submit address is empty');
     } else if (content.contains('esol')) {
-      throw Exception('Specified address is not reachable');
+      // throw Exception('Specified address is not reachable');
+      throw const InvalidAddressException('Submit address is unreachable');
     } else if (content.contains('fuse')) {
-      throw Exception('Connected machine is not android-based');
+      // throw Exception('Connected machine is not android-based');
+      throw const InvalidAndroidException('Target machine is invalid');
     } else if (content.contains('rout')) {
-      throw Exception('Specified address is not reachable');
+      // throw Exception('Specified address is not reachable');
+      throw const InvalidAddressException('Submit address is unreachable');
     } else if (content.contains('fail')) {
-      throw const AuthorizationRequiredException();
+      // throw const AuthorizationRequiredException();
+      throw const InvalidConsentException('Target machine is waiting for authorization');
     } else {
       content = (await invoke(['shell', 'uname'])).stderr;
       if (content.contains('unau')) {
@@ -85,7 +96,7 @@ abstract class Common {
       }
       return program.path;
     } else {
-      throw const UnsupportedPlatformException();
+      throw UnimplementedError();
     }
   }
 
@@ -148,17 +159,15 @@ abstract class Common {
     }
   }
 
-  Future<List<String>?> locate(String pattern) async {
+  Future<Point?> locate(String pattern) async {
     final element = await scrape(pattern);
     final content = element?.attributes['bounds'];
     if (content == null) return null;
     final matches = RegExp('\\d+').allMatches(content);
-    return [
-      matches.elementAt(0).group(0).toString(),
-      matches.elementAt(1).group(0).toString(),
-      matches.elementAt(2).group(0).toString(),
-      matches.elementAt(3).group(0).toString(),
-    ];
+    return Point(
+      (int.parse(matches.elementAt(0).group(0)!) + int.parse(matches.elementAt(2).group(0)!)) / 2,
+      (int.parse(matches.elementAt(1).group(0)!) + int.parse(matches.elementAt(3).group(0)!)) / 2,
+    );
   }
 
   Future<void> reboot() async {
@@ -221,9 +230,7 @@ abstract class Common {
   Future<bool> select(String pattern) async {
     final results = await locate(pattern);
     if (results == null) return false;
-    final x = (int.parse(results[0]) + int.parse(results[2])) / 2;
-    final y = (int.parse(results[1]) + int.parse(results[3])) / 2;
-    await invoke(['shell', 'input tap $x $y']);
+    await invoke(['shell', 'input tap ${results.x} ${results.y}']);
     return true;
   }
 

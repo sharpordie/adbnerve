@@ -6,12 +6,12 @@ import 'package:path_provider_platform_interface/path_provider_platform_interfac
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 late final String address;
-late final Device android;
+late final Shield android;
 
 void main() {
   setUpAll(() async {
     PathProviderPlatform.instance = FakePathProviderPlatform();
-    android = Device(address = '192.168.1.50');
+    android = Shield(address = '192.168.1.50');
     await android.attach();
   });
 
