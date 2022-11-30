@@ -24,6 +24,7 @@
     <td width="50"><samp>⛔</samp></td>
   </tr>
 </table>
+
 ## `Install`
 
 ```shell
