@@ -8,21 +8,22 @@
 
 <table>
   <tr>
-    <th>AND</th>
-    <th>IOS</th>
-    <th>LIN</th>
-    <th>MAC</th>
-    <th>WIN</th>
+    <td><samp>AND</samp></td>
+    <th><samp>IOS</samp></th>
+    <th><samp>LIN</samp></th>
+    <th><samp>MAC</samp></th>
+    <th><samp>WIN</samp></th>
+    <th><samp>WEB</samp></th>
   </tr>
   <tr align="center">
-    <td width="65"><p><br><img src="https://fakeimg.pl/35x35/d1ff82/fff//?text=‏‏‎ ‎"></p></td>
-    <td width="65"><p><br><img src="https://fakeimg.pl/35x35/ff8c82/fff//?text=‏‏‎ ‎"></p></td>
-    <td width="65"><p><br><img src="https://fakeimg.pl/35x35/d1ff82/fff//?text=‏‏‎ ‎"></p></td>
-    <td width="65"><p><br><img src="https://fakeimg.pl/35x35/d1ff82/fff//?text=‏‏‎ ‎"></p></td>
-    <td width="65"><p><br><img src="https://fakeimg.pl/35x35/d1ff82/fff//?text=‏‏‎ ‎"></p></td>
+    <td width="50"><samp>✅</samp></td>
+    <td width="50"><samp>⛔</samp></td>
+    <td width="50"><samp>✅</samp></td>
+    <td width="50"><samp>✅</samp></td>
+    <td width="50"><samp>✅</samp></td>
+    <td width="50"><samp>⛔</samp></td>
   </tr>
 </table>
-
 ## `Install`
 
 ```shell
