@@ -1,14 +1,14 @@
 <hr><div>
 <a href="../.."><img align="right" height="91" src="assets/logo.png"></a>
-<h1><samp>ADBNERVE</samp></h1>
+<h1>ADBNERVE</h1>
 <p>Android Toolkit for Flutter</p>
 </div><hr>
 
-<h1><samp>OVERVIEW</samp></h1>
+<h2><samp>OVERVIEW</samp></h2>
 
 ADB based library for Android automation purpose.
 
-<h1><samp>COVERAGE</samp></h1>
+<h2><samp>COVERAGE</samp></h2>
 
 <table>
   <tr>
@@ -29,7 +29,7 @@ ADB based library for Android automation purpose.
   </tr>
 </table>
 
-<h1><samp>EXAMPLES</samp></h1>
+<h2><samp>EXAMPLES</samp></h2>
 
 ### Install Package from Git
 
