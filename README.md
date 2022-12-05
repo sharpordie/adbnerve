@@ -8,6 +8,8 @@
 
 ADB based library for Android automation purpose.
 
+## `COVERAGE`
+
 <table>
   <tr>
     <th><samp>AND</samp></th>
