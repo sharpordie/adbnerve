@@ -2,13 +2,11 @@
 
 ADB based library for Android automation purpose.
 
-## <samp>COVERAGE</samp>
-
 | <samp>AND</samp> | <samp>IOS</samp> | <samp>LIN</samp> | <samp>MAC</samp> | <samp>WIN</samp> | <samp>WEB</samp> |
 | :-: | :-: | :-: | :-: | :-: | :-: |
 | <br>🟩<br><br> | <br>🟥<br><br> | <br>🟩<br><br> | <br>🟩<br><br> | <br>🟩<br><br> | <br>🟥<br><br> |
 
-## <samp>EXAMPLES</samp>
+## <samp>PREVIEW</samp>
 
 ### Update Package from Git
 
