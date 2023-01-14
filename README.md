@@ -1,4 +1,4 @@
-# <samp>ADBNERVE</samp>
+# <samp>OVERVIEW</samp>
 
 ADB based library for Android automation purpose.
 
@@ -6,9 +6,9 @@ ADB based library for Android automation purpose.
 | :-: | :-: | :-: | :-: | :-: | :-: |
 | <br>🟩<br><br> | <br>🟥<br><br> | <br>🟩<br><br> | <br>🟩<br><br> | <br>🟩<br><br> | <br>🟥<br><br> |
 
-## <samp>OVERVIEW</samp>
+# <samp>GUIDANCE</samp>
 
-### Update Package from Git
+## Update package from git
 
 ```shell
 flutter pub add adbnerve --git-url https://github.com/sharpordie/adbnerve
