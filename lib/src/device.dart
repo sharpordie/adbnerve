@@ -183,7 +183,7 @@ abstract class Device {
   }
 
   Future<Point?> runDetect(File picture, RegExp pattern) async {
-    if (!Platform.isAndroid || !Platform.isIOS) throw UnimplementedError();
+    if (!Platform.isAndroid && !Platform.isIOS) throw UnimplementedError();
     final handler = TextRecognizer(script: TextRecognitionScript.latin);
     final results = await handler.processImage(InputImage.fromFile(picture));
     handler.close();
@@ -235,7 +235,7 @@ abstract class Device {
   }
 
   Future<ProcessResult> runInvoke(List<String> command) async {
-    if (Platform.isAndroid) return await Adbready().invoke(command);
+    if (Platform.isAndroid) return await Adbready().invoke(['-s', address, ...command]);
     return await Process.run(await runDeploy(), ['-s', address, ...command]);
   }
 
@@ -257,7 +257,7 @@ abstract class Device {
   }
 
   Future<Iterable<RegExpMatch>?> runLookup(File picture, RegExp pattern) async {
-    if (!Platform.isAndroid || !Platform.isIOS) throw UnimplementedError();
+    if (!Platform.isAndroid && !Platform.isIOS) throw UnimplementedError();
     final handler = TextRecognizer(script: TextRecognitionScript.latin);
     final content = (await handler.processImage(InputImage.fromFile(picture))).text;
     handler.close();
