@@ -1,17 +1,18 @@
 import 'dart:io';
 
 import 'package:adbnerve/adbnerve.dart';
+import 'package:adbnerve/src/device.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 late final String address;
-late final Shield android;
+late final Mobile android;
 
 void main() {
   setUpAll(() async {
     PathProviderPlatform.instance = FakePathProviderPlatform();
-    android = Shield(address = '192.168.1.50');
+    android = Mobile(address = '192.168.1.50');
     await android.runAttach();
   });
 
@@ -20,8 +21,11 @@ void main() {
   });
 
   test('setLanguage()', () async {
-    // ...
-  }, skip: 'not implemented yet');
+    final payload = DeviceLanguage.frFr;
+    await android.setLanguage(payload);
+    final results = (await android.runInvoke(['shell', 'getprop persist.sys.locale'])).stdout.trim();
+    expect(results, payload.payload);
+  });
 }
 
 class FakePathProviderPlatform extends Fake with MockPlatformInterfaceMixin implements PathProviderPlatform {
