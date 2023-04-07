@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:adbnerve/adbnerve.dart';
+import 'package:adbnerve/src/device.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -16,10 +17,22 @@ void main() {
   });
 
   tearDownAll(() async {
+    // await android.setLanguage(DeviceLanguage.enUs);
     // await android.runDetach();
   });
 
   test('setLanguage()', () async {
+    final current = await android.getLocale();
+    final payload = current == DeviceLanguage.enUs.payload ? DeviceLanguage.frFr : DeviceLanguage.enUs;
+    await android.setLanguage(payload);
+    expect(await android.getLocale(), payload.payload);
+  });
+
+  test('setResolution()', () async {
+    await android.setResolution(ShieldResolution.p1080Hdr10Hz23);
+  });
+
+  test('setUpscaling()', () async {
     // ...
   }, skip: 'not implemented yet');
 }

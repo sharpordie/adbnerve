@@ -28,12 +28,25 @@ enum DeviceLanguage {
   idId('id-ID', 'Indonesia'),
   itIt('it-IT', 'Italiano'),
   lvLv('lv-LV', 'Latviešu'),
-  jaJp('ja-JP', '日本語');
+  jaJp('ja-JP', '日本語'),
+  ;
 
   const DeviceLanguage(this.payload, this.content);
 
   final String payload;
   final String content;
+}
+
+enum DeviceSetting {
+  localeSettings('am start -a android.settings.LOCALE_SETTINGS'),
+  tvExternalSourcesActivity('am start -n com.android.tv.settings/.device.apps.specialaccess.ExternalSourcesActivity'),
+  tvLanguageActivity('am start -n com.android.tv.settings/.system.LanguageActivity'),
+  tvMainSettings('am start -n com.android.tv.settings/com.android.tv.settings.MainSettings'),
+  ;
+
+  const DeviceSetting(this.payload);
+
+  final String payload;
 }
 
 class InvalidAddressException implements Exception {
@@ -81,6 +94,10 @@ abstract class Device {
   final String address;
   final String? port;
   final String? code;
+
+  Future<String> getLocale() async {
+    return (await runInvoke(['shell', 'getprop persist.sys.locale'])).stdout.trim();
+  }
 
   Future<bool> getSeated(String package) async {
     return (await runInvoke(['shell', 'pm path \'$package\''])).stdout.isNotEmpty;
@@ -256,6 +273,10 @@ abstract class Device {
 
   Future<void> runRepeat(String keycode, {int repeats = 1}) async {
     await runInvoke(['shell', "input keyevent \$(printf '${keycode.toUpperCase()} %.0s' \$(seq 1 $repeats))"]);
+  }
+
+  Future<void> runReveal(DeviceSetting payload) async {
+    await runInvoke(['shell', payload.payload]);
   }
 
   Future<XPathNode?> runScrape(String pattern) async {

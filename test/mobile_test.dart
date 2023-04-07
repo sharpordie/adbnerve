@@ -17,14 +17,15 @@ void main() {
   });
 
   tearDownAll(() async {
+    // await android.setLanguage(DeviceLanguage.enUs);
     // await android.runDetach();
   });
 
   test('setLanguage()', () async {
-    final payload = DeviceLanguage.frFr;
+    final current = await android.getLocale();
+    final payload = current == DeviceLanguage.enUs.payload ? DeviceLanguage.frFr : DeviceLanguage.enUs;
     await android.setLanguage(payload);
-    final results = (await android.runInvoke(['shell', 'getprop persist.sys.locale'])).stdout.trim();
-    expect(results, payload.payload);
+    expect(await android.getLocale(), payload.payload);
   });
 }
 
