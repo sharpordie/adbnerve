@@ -14,6 +14,7 @@ void main() {
     PathProviderPlatform.instance = FakePathProviderPlatform();
     android = Mobile(address = '192.168.1.50');
     await android.runAttach();
+    await android.runEscape();
   });
 
   tearDownAll(() async {

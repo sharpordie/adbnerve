@@ -38,6 +38,7 @@ enum DeviceLanguage {
 }
 
 enum DeviceSetting {
+  displaySettings('am start -a android.settings.DISPLAY_SETTINGS'),
   localeSettings('am start -a android.settings.LOCALE_SETTINGS'),
   tvExternalSourcesActivity('am start -n com.android.tv.settings/.device.apps.specialaccess.ExternalSourcesActivity'),
   tvLanguageActivity('am start -n com.android.tv.settings/.system.LanguageActivity'),

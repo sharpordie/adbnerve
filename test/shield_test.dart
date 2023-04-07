@@ -14,6 +14,7 @@ void main() {
     PathProviderPlatform.instance = FakePathProviderPlatform();
     android = Shield(address = '192.168.1.50');
     await android.runAttach();
+    await android.runEscape();
   });
 
   tearDownAll(() async {
@@ -29,7 +30,7 @@ void main() {
   });
 
   test('setResolution()', () async {
-    await android.setResolution(ShieldResolution.p1080Hdr10Hz23);
+    await android.setResolution(ShieldResolution.p1080Hdr10Hz59);
   });
 
   test('setUpscaling()', () async {
