@@ -19,7 +19,6 @@ enum ShieldResolution {
 }
 
 enum ShieldUpscaling {
-  none('Default', ['', '']),
   basic('Basic', ['Basic', '']),
   enhanced('Enhanced', ['Enhanced', '']),
   aiLow('AI Low', ['AI-Enhanced', 'Low']),
@@ -98,7 +97,7 @@ class Shield extends Device {
     await runSelect('//*[@text="Device Preferences"]');
     await runSelect('//*[@text="Display & Sound"]');
     await runSelect('//*[@text="AI upscaling"]');
-    if (payload.payload[0].isNotEmpty) await runSelect('//*[@text="${payload.payload[0]}"]');
+    await runSelect('//*[@text="${payload.payload[0]}"]');
     if (payload.payload[1].isNotEmpty) await runSelect('//*[@text="${payload.payload[1]}"]');
     await runRepeat('keycode_home');
   }

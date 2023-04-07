@@ -20,6 +20,10 @@ void main() {
     // await android.runDetach();
   });
 
+  test('getLocale()', () async {
+    // ...
+  }, skip: 'not implemented yet');
+
   test('getSeated()', () async {
     // ...
   }, skip: 'not implemented yet');
@@ -71,7 +75,7 @@ void main() {
   }, skip: 'not implemented yet');
 
   test('runInsert()', () async {
-    await android.runInsert("anonymous@example.org");
+    // ...
   }, skip: 'not implemented yet');
 
   test('runInvoke()', () async {
@@ -106,6 +110,11 @@ void main() {
   test('runScrape()', () async {
     // ...
   }, skip: 'not implemented yet');
+
+  test('runScreen()', () async {
+    final fetched = File((await android.runScreen())!);
+    expect(fetched.lengthSync() > 0, true);
+  });
 
   test('runSearch()', () async {
     // ...

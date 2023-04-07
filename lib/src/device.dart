@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 import 'package:xpath_selector/xpath_selector.dart';
 import 'package:xpath_selector_xml_parser/xpath_selector_xml_parser.dart';
 
@@ -181,14 +182,14 @@ abstract class Device {
     await runInvoke(['kill-server']);
   }
 
-  Future<Point?> runDetect(File picture, String pattern) async {
+  Future<Point?> runDetect(File picture, RegExp pattern) async {
     if (!Platform.isAndroid || !Platform.isIOS) throw UnimplementedError();
     final handler = TextRecognizer(script: TextRecognitionScript.latin);
     final results = await handler.processImage(InputImage.fromFile(picture));
     handler.close();
     List members = [];
     for (var block in results.blocks) for (var line in block.lines) for (var element in line.elements) members.add(element);
-    final factors = members.where((x) => RegExp(pattern).hasMatch(x.text));
+    final factors = members.where((x) => pattern.hasMatch(x.text));
     if (factors.isEmpty) return null;
     final element = factors.first.boundingBox.center;
     return Point(element.dx.floor(), element.dy.floor());
@@ -219,7 +220,8 @@ abstract class Device {
 
   Future<String?> runImport(String distant) async {
     final deposit = (await getTemporaryDirectory()).path;
-    final created = p.join(deposit, p.basename(distant));
+    final storage = await Directory(p.join(deposit, Uuid().v4())).create(recursive: true);
+    final created = p.join(storage.path, p.basename(distant));
     await runInvoke(['pull', distant, created]);
     return (await File(created).exists() || await Directory(created).exists()) ? created : null;
   }
@@ -229,7 +231,6 @@ abstract class Device {
       await runRepeat('keycode_move_end');
       await runRepeat('keycode_del', repeats: 100);
     }
-    // TODO: Make it much more robust.
     await runInvoke(['shell', 'input text \'$content\'']);
   }
 
@@ -255,12 +256,12 @@ abstract class Device {
     );
   }
 
-  Future<Iterable<RegExpMatch>?> runLookup(File picture, String pattern) async {
+  Future<Iterable<RegExpMatch>?> runLookup(File picture, RegExp pattern) async {
     if (!Platform.isAndroid || !Platform.isIOS) throw UnimplementedError();
     final handler = TextRecognizer(script: TextRecognitionScript.latin);
     final content = (await handler.processImage(InputImage.fromFile(picture))).text;
     handler.close();
-    final matches = RegExp(pattern).allMatches(content);
+    final matches = pattern.allMatches(content);
     if (matches.isEmpty) return null;
     return matches;
   }
@@ -318,6 +319,12 @@ abstract class Device {
       if (stream1 == stream2) break;
     }
     return element;
+  }
+
+  Future<String?> runScreen({String distant = '/sdcard/screenshot.png'}) async {
+    await runInvoke(['shell', 'screencap', '-p', distant]);
+    final fetched = await runImport(distant);
+    return fetched;
   }
 
   Future<List<String>?> runSearch(String pattern, {int maximum = 1}) async {
