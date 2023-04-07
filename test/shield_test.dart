@@ -29,13 +29,17 @@ void main() {
     expect(await android.getLocale(), payload.payload);
   });
 
+  test('setPictureInPicture()', () async {
+    await android.setPictureInPicture('Plex', enabled: false);
+  });
+
   test('setResolution()', () async {
     await android.setResolution(ShieldResolution.p1080Hdr10Hz59);
   });
 
   test('setUpscaling()', () async {
-    // ...
-  }, skip: 'not implemented yet');
+    await android.setUpscaling(ShieldUpscaling.enhanced);
+  });
 }
 
 class FakePathProviderPlatform extends Fake with MockPlatformInterfaceMixin implements PathProviderPlatform {

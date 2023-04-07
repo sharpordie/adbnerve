@@ -19,7 +19,7 @@ enum ShieldResolution {
 }
 
 enum ShieldUpscaling {
-  none('Default', []),
+  none('Default', ['', '']),
   basic('Basic', ['Basic', '']),
   enhanced('Enhanced', ['Enhanced', '']),
   aiLow('AI Low', ['AI-Enhanced', 'Low']),
@@ -44,6 +44,23 @@ class Shield extends Device {
     }
   }
 
+  Future<void> setPictureInPicture(String payload, {bool enabled = true}) async {
+    await setLanguage(DeviceLanguage.enUs);
+    await runReveal(DeviceSetting.tvMainSettings);
+    await runSelect('//*[@text="Apps"]');
+    await runSelect('//*[@text="Special app access"]');
+    await runSelect('//*[@text="Picture-in-picture"]');
+    await Future.delayed(const Duration(seconds: 5));
+    final pattern = '//*[@text="$payload"]/parent::*/following-sibling::*/node';
+    final element = await runScrape(pattern);
+    if (element != null) {
+      final checked = element.attributes['checked'] == 'true';
+      final correct = (checked && enabled) || (!checked && !enabled);
+      if (!correct) await runSelect('//*[@text="$payload"]');
+    }
+    await runRepeat('keycode_home');
+  }
+
   Future<void> setResolution(ShieldResolution payload) async {
     await setLanguage(DeviceLanguage.enUs);
     await runReveal(DeviceSetting.tvMainSettings);
@@ -52,32 +69,37 @@ class Shield extends Device {
     await runSelect('//*[@text="Resolution"]');
     final shaping = "//*[contains(@text, '{}') and contains(@text, '{}') and contains(@text, '{}')]";
     final factors = [payload.payload[0], payload.payload[1], payload.payload[2] ? 'Vision' : 'Hz'];
-    final pattern = shaping.format(factors) + "/parent::*/parent::*/node[1]";
-    final element = await runScrape(pattern);
-    if (element != null) {
-      if (element.attributes['checked'] == 'true') {
+    final factor1 = shaping.format(factors) + "/parent::*/parent::*/node[1]";
+    final target1 = await runScrape(factor1);
+    if (target1 != null) {
+      if (target1.attributes['checked'] == 'true')
         await runRepeat('keycode_back');
-      } else {
-        await runSelect(pattern);
+      else {
+        await runSelect(factor1);
         await runRepeat('keycode_dpad_right', repeats: 5);
         await runRepeat('keycode_dpad_up', repeats: 5);
         await runRepeat('keycode_enter');
       }
       await runSelect('//*[@text="Advanced display settings"]');
-      final pattern2 = '//*[@text="Match content color space"]/parent::*/following-sibling::*/node';
-      final element2 = await runScrape(pattern2);
-      if (element2 != null) {
-        final checked = element2.attributes['checked'] == 'true';
-        final correct = (checked && payload.payload[2]) || (checked == false && payload.payload[2] == false);
-        if (correct == false) {
-          await runSelect(pattern2);
-        }
+      final factor2 = '//*[@text="Match content color space"]/parent::*/following-sibling::*/node';
+      final target2 = await runScrape(factor2);
+      if (target2 != null) {
+        final checked = target2.attributes['checked'] == 'true';
+        final correct = (checked && payload.payload[2]) || (!checked && !payload.payload[2]);
+        if (!correct) await runSelect(factor2);
       }
-      await runRepeat('keycode_home');
     }
+    await runRepeat('keycode_home');
   }
 
   Future<void> setUpscaling(ShieldUpscaling payload) async {
-    throw UnimplementedError();
+    await setLanguage(DeviceLanguage.enUs);
+    await runReveal(DeviceSetting.tvMainSettings);
+    await runSelect('//*[@text="Device Preferences"]');
+    await runSelect('//*[@text="Display & Sound"]');
+    await runSelect('//*[@text="AI upscaling"]');
+    if (payload.payload[0].isNotEmpty) await runSelect('//*[@text="${payload.payload[0]}"]');
+    if (payload.payload[1].isNotEmpty) await runSelect('//*[@text="${payload.payload[1]}"]');
+    await runRepeat('keycode_home');
   }
 }

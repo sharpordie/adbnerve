@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:adbready/adbready.dart';
 import 'package:archive/archive_io.dart';
 import 'package:dio/dio.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:xpath_selector/xpath_selector.dart';
@@ -180,6 +181,19 @@ abstract class Device {
     await runInvoke(['kill-server']);
   }
 
+  Future<Point?> runDetect(File picture, String pattern) async {
+    if (!Platform.isAndroid || !Platform.isIOS) throw UnimplementedError();
+    final handler = TextRecognizer(script: TextRecognitionScript.latin);
+    final results = await handler.processImage(InputImage.fromFile(picture));
+    handler.close();
+    List members = [];
+    for (var block in results.blocks) for (var line in block.lines) for (var element in line.elements) members.add(element);
+    final factors = members.where((x) => RegExp(pattern).hasMatch(x.text));
+    if (factors.isEmpty) return null;
+    final element = factors.first.boundingBox.center;
+    return Point(element.dx.floor(), element.dy.floor());
+  }
+
   Future<void> runEnable(String package, {bool enabled = true}) async {
     final payload = enabled ? 'enable' : 'disable-user --user 0';
     await runInvoke(['shell', 'pm $payload "$package"']);
@@ -239,6 +253,16 @@ abstract class Device {
       (int.parse(matches.elementAt(0).group(0)!) + int.parse(matches.elementAt(2).group(0)!)) / 2,
       (int.parse(matches.elementAt(1).group(0)!) + int.parse(matches.elementAt(3).group(0)!)) / 2,
     );
+  }
+
+  Future<Iterable<RegExpMatch>?> runLookup(File picture, String pattern) async {
+    if (!Platform.isAndroid || !Platform.isIOS) throw UnimplementedError();
+    final handler = TextRecognizer(script: TextRecognitionScript.latin);
+    final content = (await handler.processImage(InputImage.fromFile(picture))).text;
+    handler.close();
+    final matches = RegExp(pattern).allMatches(content);
+    if (matches.isEmpty) return null;
+    return matches;
   }
 
   Future<void> runReboot() async {
