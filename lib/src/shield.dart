@@ -2,14 +2,14 @@ import 'package:adbnerve/src/device.dart';
 import 'package:format/format.dart';
 
 enum ShieldResolution {
-  p1080DolbyHz23('', ['1080', '23.976', true]),
-  p1080DolbyHz59('', ['1080', '59.940', true]),
-  p2160DolbyHz23('', ['4K', '23.976', true]),
-  p2160DolbyHz59('', ['4K', '59.940', true]),
-  p1080Hdr10Hz23('', ['1080', '23.976', false]),
-  p1080Hdr10Hz59('', ['1080', '59.940', false]),
-  p2160Hdr10Hz23('', ['4K', '23.976', false]),
-  p2160Hdr10Hz59('', ['4K', '59.940', false]),
+  p2160DolbyHz23('4K 23.976 Hz Dolby Vision', ['4K', '23.976', true]),
+  p2160DolbyHz59('4K 59.940 Hz Dolby Vision', ['4K', '59.940', true]),
+  p2160Hdr10Hz23('4K 23.976 Hz HDR10', ['4K', '23.976', false]),
+  p2160Hdr10Hz59('4K 59.940 Hz HDR10', ['4K', '59.940', false]),
+  p1080DolbyHz23('1080p 23.976 Hz Dolby Vision', ['1080', '23.976', true]),
+  p1080DolbyHz59('1080p 59.940 Hz Dolby Vision', ['1080', '59.940', true]),
+  p1080Hdr10Hz23('1080p 23.976 Hz HDR10', ['1080', '23.976', false]),
+  p1080Hdr10Hz59('1080p 59.940 Hz HDR10', ['1080', '59.940', false]),
   ;
 
   const ShieldResolution(this.content, this.payload);
