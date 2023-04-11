@@ -201,10 +201,8 @@ abstract class Device {
   }
 
   Future<void> runEscape() async {
-    for (int i = 0; i < 2; i++) {
-      await runRepeat('keycode_back', repeats: 8);
-    }
-    await runRepeat('keycode_wakeup');
+    for (int i = 0; i < 2; i++) await runRepeat('keycode_back', repeats: 8);
+    await runRepeat('keycode_wakeup', repeats: 2);
     await Future.delayed(const Duration(seconds: 2));
   }
 
