@@ -91,6 +91,18 @@ class Shield extends Device {
     await runRepeat('keycode_home');
   }
 
+  Future<void> setScreensaver({bool enabled = true}) async {
+    await setLanguage(DeviceLanguage.enUs);
+    await runReveal(DeviceSetting.tvMainSettings);
+    await runSelect('//*[@text="Device Preferences"]');
+    await runSelect('//*[@text="Screen saver"]');
+    await runRepeat('keycode_dpad_up', repeats: 10);
+    await runRepeat('keycode_enter');
+    final payload = enabled ? 'Backdrop' : 'Turn screen off';
+    await runSelect('//*[@text="$payload"]');
+    await runRepeat('keycode_home');
+  }
+
   Future<void> setUpscaling(ShieldUpscaling payload) async {
     await setLanguage(DeviceLanguage.enUs);
     await runReveal(DeviceSetting.tvMainSettings);
