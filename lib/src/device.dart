@@ -98,6 +98,15 @@ abstract class Device {
   final String? port;
   final String? code;
 
+  Future<String?> getIpAddr() async {
+    for (final adapter in ['eth0', 'wlan0']){
+      final command = ['shell', 'ip -f inet -o addr show $adapter | cut -d \" \" -f 7 | cut -d / -f 1'];
+      final address = (await runInvoke(command)).stdout.toString().trim();
+      if(address.isNotEmpty) return address;
+    }
+    return null;
+  }
+
   Future<String> getLocale() async {
     return (await runInvoke(['shell', 'getprop persist.sys.locale'])).stdout.trim();
   }
