@@ -354,6 +354,7 @@ abstract class Device {
       await runExport(archive, distant);
       await runInvoke(['shell', 'cd \'$deposit\' ; unzip -o \'$distant\'']);
       await runRemove(distant);
+      await Future.delayed(const Duration(seconds: 2));
     }
   }
 
