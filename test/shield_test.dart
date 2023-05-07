@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:adbnerve/adbnerve.dart';
-import 'package:adbnerve/src/device.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -18,7 +17,7 @@ void main() {
   });
 
   tearDownAll(() async {
-    // await android.setLanguage(DeviceLanguage.enUs);
+    await android.setLanguage(DeviceLanguage.enUs);
     // await android.runDetach();
   });
 
@@ -38,7 +37,7 @@ void main() {
   });
 
   test('setUpscaling()', () async {
-    await android.setUpscaling(ShieldUpscaling.enhanced);
+    await android.setUpscaling(ShieldUpscaling.aiHigh);
   });
 }
 

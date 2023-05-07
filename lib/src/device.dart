@@ -8,8 +8,8 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:xpath_selector/xpath_selector.dart';
-import 'package:xpath_selector_xml_parser/xpath_selector_xml_parser.dart';
+import 'package:xml/xml.dart';
+import 'package:xml/xpath.dart';
 
 enum DeviceLanguage {
   caEs('ca-ES', 'Català'),
@@ -99,10 +99,10 @@ abstract class Device {
   final String? code;
 
   Future<String?> getIpAddr() async {
-    for (final adapter in ['eth0', 'wlan0']){
+    for (final adapter in ['eth0', 'wlan0']) {
       final command = ['shell', 'ip -f inet -o addr show $adapter | cut -d \" \" -f 7 | cut -d / -f 1'];
       final address = (await runInvoke(command)).stdout.toString().trim();
-      if(address.isNotEmpty) return address;
+      if (address.isNotEmpty) return address;
     }
     return null;
   }
@@ -254,7 +254,7 @@ abstract class Device {
 
   Future<Point?> runLocate(String pattern) async {
     final element = await runScrape(pattern);
-    final content = element?.attributes['bounds'];
+    final content = element?.getAttribute('bounds');
     if (content == null) return null;
     final matches = RegExp('\\d+').allMatches(content);
     return Point(
@@ -312,14 +312,18 @@ abstract class Device {
     await runInvoke(['shell', payload.payload]);
   }
 
-  Future<XPathNode?> runScrape(String pattern) async {
+  Future<XmlElement?> runScrape(String pattern) async {
     await runRepeat('keycode_dpad_up', repeats: 100);
     var fetched = await runRender();
-    XPathNode? element;
+    XmlElement? element;
     while (element == null) {
-      var scraped = XmlXPath.xml(await File(fetched).readAsString());
-      element = scraped.query(pattern).node;
-      if (element != null) continue;
+      var scraped = XmlDocument.parse((new File(fetched)).readAsStringSync());
+      var results = scraped.xpath(pattern);
+      if (results.isNotEmpty) {
+        element = results.first as XmlElement?;
+        continue;
+      }
+      element = null;
       await runRepeat('keycode_dpad_down', repeats: 8);
       var stream1 = await File(fetched).readAsString();
       var stream2 = await File(fetched = await runRender()).readAsString();
