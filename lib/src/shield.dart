@@ -1,6 +1,17 @@
 import 'package:adbnerve/src/device.dart';
 import 'package:format/format.dart';
 
+enum ShieldBloatwareLevel {
+  low('Low'),
+  medium('Medium'),
+  maximum('Maximum'),
+  ;
+
+  const ShieldBloatwareLevel(this.content);
+
+  final String content;
+}
+
 enum ShieldResolution {
   p2160DolbyHz23('4K 23.976 Hz Dolby Vision', ['4K', '23.976', true]),
   p2160DolbyHz59('4K 59.940 Hz Dolby Vision', ['4K', '59.940', true]),
@@ -34,6 +45,76 @@ enum ShieldUpscaling {
 
 class Shield extends Device {
   const Shield(super.name, {super.port, super.code});
+
+  Future<void> setBloatware({bool enabled = true}) async {
+    final factors = [
+      'android.autoinstalls.config.nvidia',
+      'com.nvidia.benchmarkblocker',
+      'com.nvidia.beyonder.server',
+      'com.nvidia.developerwidget',
+      'com.nvidia.diagtools',
+      'com.nvidia.enhancedlogging',
+      'com.nvidia.factorybundling',
+      'com.nvidia.feedback',
+      'com.nvidia.hotwordsetup',
+      'com.nvidia.NvAccSt',
+      'com.nvidia.NvCPLUpdater',
+      'com.nvidia.ocs',
+      'com.nvidia.ota',
+      'com.nvidia.shield.appselector',
+      'com.nvidia.shield.ask',
+      'com.nvidia.shield.nvcustomize',
+      'com.nvidia.SHIELD.Platform.Analyser',
+      'com.nvidia.shield.registration',
+      'com.nvidia.shield.registration',
+      'com.nvidia.shield.remote.server',
+      'com.nvidia.shield.remotediagnostic',
+      'com.nvidia.shieldbeta',
+      'com.nvidia.shieldtech.hooks',
+      'com.nvidia.shieldtech.proxy',
+      'com.nvidia.stats',
+
+      'com.android.gallery3d',
+      'com.android.dreams.basic',
+      'com.android.printspooler',
+      'com.android.feedback',
+      'com.android.keychain',
+      'com.android.cts.priv.ctsshim',
+      'com.android.cts.ctsshim',
+      'com.android.providers.calendar',
+      'com.android.providers.contacts',
+      'com.android.se',
+
+      'com.google.android.speech.pumpkin',
+      'com.google.android.tts',
+      'com.google.android.videos',
+      'com.google.android.tvrecommendations',
+      'com.google.android.syncadapters.calendar',
+      'com.google.android.backuptransport',
+      'com.google.android.partnersetup',
+      'com.google.android.inputmethod.korean',
+      'com.google.android.inputmethod.pinyin',
+      'com.google.android.apps.inputmethod.zhuyin',
+      'com.google.android.tv',
+      'com.google.android.tv.frameworkpackagestubs',
+      'com.google.android.tv.bugreportsender',
+      'com.google.android.backdrop',
+      'com.google.android.leanbacklauncher.recommendations',
+      'com.google.android.tvlauncher',
+      'com.google.android.feedback',
+      'com.google.android.leanbacklauncher',
+
+      'com.plexapp.mediaserver.smb',
+      'com.google.android.play.games',
+      'com.netflix.ninja',
+      'com.amazon.amazonvideo.livingroom',
+      'com.google.android.youtube.tvmusic',
+    ];
+    final command = enabled ? 'cmd package install-existing' : 'pm uninstall -k --user 0';
+    for (final package in factors) {
+      await runInvoke(['shell', '$command $package']);
+    }
+  }
 
   Future<void> setLanguage(DeviceLanguage payload) async {
     if (await getLocale() != payload.payload) {
