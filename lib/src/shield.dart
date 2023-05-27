@@ -117,12 +117,16 @@ class Shield extends Device {
   }
 
   Future<void> setLanguage(DeviceLanguage payload) async {
-    await runReveal(DeviceSetting.tvLanguageActivity);
-    if ((await getLocale()).isEmpty) {
+    var current = await getLocale();
+    if (current.isEmpty) {
+      await runReveal(DeviceSetting.tvLanguageActivity);
       await runRepeat('keycode_dpad_up', repeats: 99);
       await runRepeat('keycode_enter');
+      await Future.delayed(const Duration(seconds: 5));
     }
-    if (await getLocale() != payload.payload) {
+    current = await getLocale();
+    if (current != payload.payload) {
+      await runReveal(DeviceSetting.tvLanguageActivity);
       await runSelect('//*[@text="${payload.content}"]');
       await runRepeat('keycode_back');
     }
