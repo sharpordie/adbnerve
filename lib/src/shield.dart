@@ -160,25 +160,27 @@ class Shield extends Device {
     final shaping = "//*[contains(@text, '{}') and contains(@text, '{}') and contains(@text, '{}')]";
     final factors = [payload.payload[0], payload.payload[1], payload.payload[2] ? 'Vision' : 'Hz'];
     final factor1 = shaping.format(factors) + "/parent::*/parent::*/node[1]";
-    final target1 = await runScrape(factor1);
-    if (target1 != null) {
-      if (target1.getAttribute('checked') == 'true')
-        await runRepeat('keycode_back');
-      else {
-        await runSelect(factor1);
-        await runRepeat('keycode_dpad_right', repeats: 5);
-        await runRepeat('keycode_dpad_up', repeats: 5);
-        await runRepeat('keycode_enter');
+    try {
+      final target1 = await runScrape(factor1);
+      if (target1 != null) {
+        if (target1.getAttribute('checked') == 'true')
+          await runRepeat('keycode_back');
+        else {
+          await runSelect(factor1);
+          await runRepeat('keycode_dpad_right', repeats: 5);
+          await runRepeat('keycode_dpad_up', repeats: 5);
+          await runRepeat('keycode_enter');
+        }
+        await runSelect('//*[@text="Advanced display settings"]');
+        final factor2 = '//*[@text="Match content color space"]/parent::*/following-sibling::*/node';
+        final target2 = await runScrape(factor2);
+        if (target2 != null) {
+          final checked = target2.getAttribute('checked') == 'true';
+          final correct = (checked && payload.payload[2]) || (!checked && !payload.payload[2]);
+          if (!correct) await runSelect(factor2);
+        }
       }
-      await runSelect('//*[@text="Advanced display settings"]');
-      final factor2 = '//*[@text="Match content color space"]/parent::*/following-sibling::*/node';
-      final target2 = await runScrape(factor2);
-      if (target2 != null) {
-        final checked = target2.getAttribute('checked') == 'true';
-        final correct = (checked && payload.payload[2]) || (!checked && !payload.payload[2]);
-        if (!correct) await runSelect(factor2);
-      }
-    }
+    } catch (_) {}
     await runRepeat('keycode_home');
   }
 
