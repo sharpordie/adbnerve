@@ -48,6 +48,7 @@ class Shield extends Device {
 
   Future<void> setBloatware({bool enabled = true}) async {
     final factors = [
+      // Nvidia bloatware
       'android.autoinstalls.config.nvidia',
       'com.nvidia.benchmarkblocker',
       'com.nvidia.beyonder.server',
@@ -73,7 +74,7 @@ class Shield extends Device {
       'com.nvidia.shieldtech.hooks',
       'com.nvidia.shieldtech.proxy',
       'com.nvidia.stats',
-
+      // Android bloatware
       'com.android.gallery3d',
       'com.android.dreams.basic',
       'com.android.printspooler',
@@ -84,7 +85,7 @@ class Shield extends Device {
       'com.android.providers.calendar',
       'com.android.providers.contacts',
       'com.android.se',
-
+      // Google bloatware
       'com.google.android.speech.pumpkin',
       'com.google.android.tts',
       'com.google.android.videos',
@@ -103,17 +104,18 @@ class Shield extends Device {
       'com.google.android.tvlauncher',
       'com.google.android.feedback',
       'com.google.android.leanbacklauncher',
-
+      // Extra bloatware
       'com.plexapp.mediaserver.smb',
       'com.google.android.play.games',
       'com.netflix.ninja',
       'com.amazon.amazonvideo.livingroom',
       'com.google.android.youtube.tvmusic',
     ];
-    final command = enabled ? 'cmd package install-existing' : 'pm uninstall -k --user 0';
-    for (final package in factors) {
-      await runInvoke(['shell', '$command $package']);
-    }
+    for (final package in factors) await runEnable(package, enabled: enabled);
+    // final command = enabled ? 'cmd package install-existing' : 'pm uninstall -k --user 0';
+    // for (final package in factors) {
+    //   await runInvoke(['shell', '$command $package']);
+    // }
   }
 
   Future<void> setLanguage(DeviceLanguage payload) async {
