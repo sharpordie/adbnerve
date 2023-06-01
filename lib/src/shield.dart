@@ -85,6 +85,7 @@ class Shield extends Device {
       'com.android.providers.calendar',
       'com.android.providers.contacts',
       'com.android.se',
+      'com.android.vending',
       // Google bloatware
       'com.google.android.speech.pumpkin',
       'com.google.android.tts',
@@ -111,11 +112,11 @@ class Shield extends Device {
       'com.amazon.amazonvideo.livingroom',
       'com.google.android.youtube.tvmusic',
     ];
-    for (final package in factors) await runEnable(package, enabled: enabled);
-    // final command = enabled ? 'cmd package install-existing' : 'pm uninstall -k --user 0';
-    // for (final package in factors) {
-    //   await runInvoke(['shell', '$command $package']);
-    // }
+    // for (final package in factors) await runEnable(package, enabled: enabled);
+    final command = enabled ? 'cmd package install-existing' : 'pm uninstall -k --user 0';
+    for (final package in factors) {
+      await runInvoke(['shell', '$command $package']);
+    }
   }
 
   Future<void> setLanguage(DeviceLanguage payload) async {
