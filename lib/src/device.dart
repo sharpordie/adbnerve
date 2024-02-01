@@ -94,10 +94,16 @@ class InvalidConsentException implements Exception {
 abstract class Device {
   const Device(this.address, {this.port, this.code});
 
+  /// ...
   final String address;
+
+  /// ...
   final String? port;
+
+  /// ...
   final String? code;
 
+  /// Gather the ip address of the distant device.
   Future<String?> getIpAddr() async {
     for (final adapter in ['eth0', 'wlan0']) {
       final command = ['shell', 'ip -f inet -o addr show $adapter | cut -d \" \" -f 7 | cut -d / -f 1'];
@@ -107,18 +113,22 @@ abstract class Device {
     return null;
   }
 
+  /// ...
   Future<String> getLocale() async {
     return (await runInvoke(['shell', 'getprop persist.sys.locale'])).stdout.trim();
   }
 
+  /// Gather whether the package is installed on distant device.
   Future<bool> getSeated(String package) async {
     return (await runInvoke(['shell', 'pm path \'$package\''])).stdout.isNotEmpty;
   }
 
+  /// Accord privilege to installed package on distant device.
   Future<void> runAccord(String package, String consent) async {
     await runInvoke(['shell', 'pm grant \'$package\' android.permission.${consent.toUpperCase()}']);
   }
 
+  /// Attach distant device using ip address.
   Future<void> runAttach() async {
     var content = (await runInvoke(['connect', address])).stdout;
     if (content.contains('cann')) {
@@ -146,16 +156,19 @@ abstract class Device {
     }
   }
 
+  /// Bridge distant device using pairing port and code.
   Future<void> runBridge() async {
     final content = (await runInvoke(['pair', '$address:$port', code ?? ''])).stdout;
     if (content.contains('rong')) throw Exception('Specified pairing code is invalid');
   }
 
+  /// Create new folder or file to distant device.
   Future<void> runCreate(String distant) async {
     final command = ['shell', 'mkdir -p "\$(dirname "$distant")" ; touch "$distant"'];
     await runInvoke(command);
   }
 
+  /// Deploy adb to the running device.
   Future<String> runDeploy() async {
     if (Platform.isAndroid) {
       return await Adbready().deploy();
@@ -186,11 +199,13 @@ abstract class Device {
     }
   }
 
+  /// ...
   Future<void> runDetach() async {
     await runInvoke(['disconnect', address]);
     await runInvoke(['kill-server']);
   }
 
+  /// Detect the text pattern in picture using OCR and return the center of it.
   Future<Point?> runDetect(File picture, RegExp pattern) async {
     if (!Platform.isAndroid && !Platform.isIOS) throw UnimplementedError();
     final handler = TextRecognizer(script: TextRecognitionScript.latin);
@@ -204,27 +219,37 @@ abstract class Device {
     return Point(element.dx.floor(), element.dy.floor());
   }
 
+  /// ...
   Future<void> runEnable(String package, {bool enabled = true}) async {
     final payload = enabled ? 'enable' : 'disable-user --user 0';
     await runInvoke(['shell', 'pm $payload "$package"']);
   }
 
+  /// ...
   Future<void> runEscape() async {
     for (int i = 0; i < 2; i++) await runRepeat('keycode_back', repeats: 8);
     await runRepeat('keycode_wakeup', repeats: 2);
     await Future.delayed(const Duration(seconds: 2));
   }
 
+  /// ...
   Future<void> runExport(String storage, String distant) async {
     await runInvoke(['push', storage, distant]);
   }
 
+  /// ...
   Future<void> runFinish(String package) async {
     if (await getSeated(package)) {
       await runInvoke(['shell', 'sleep 2 ; am force-stop "$package" ; sleep 2']);
     }
   }
 
+  /// TODO: Detect the picture in picture using template matching and return the center of it.
+  Future<Point?> runGlance(File factor1, File factor2) async {
+    throw UnimplementedError();
+  }
+
+  /// ...
   Future<String?> runImport(String distant) async {
     final deposit = (await getTemporaryDirectory()).path;
     final storage = await Directory(p.join(deposit, Uuid().v4())).create(recursive: true);
@@ -233,6 +258,7 @@ abstract class Device {
     return (await File(created).exists() || await Directory(created).exists()) ? created : null;
   }
 
+  /// ...
   Future<void> runInsert(String content, {bool cleared = false}) async {
     if (cleared) {
       await runRepeat('keycode_move_end');
@@ -241,17 +267,20 @@ abstract class Device {
     await runInvoke(['shell', 'input text \'$content\'']);
   }
 
+  /// ...
   Future<ProcessResult> runInvoke(List<String> command) async {
     if (Platform.isAndroid) return await Adbready().invoke(['-s', address, ...command]);
     return await Process.run(await runDeploy(), ['-s', address, ...command]);
   }
 
+  /// ...
   Future<void> runLaunch(String package) async {
     if (await getSeated(package)) {
       await runInvoke(['shell', 'sleep 2 ; monkey -p "$package" 1 ; sleep 2']);
     }
   }
 
+  /// ...
   Future<Point?> runLocate(String pattern) async {
     final element = await runScrape(pattern);
     final content = element?.getAttribute('bounds');
@@ -263,6 +292,7 @@ abstract class Device {
     );
   }
 
+  /// Lookup for text pattern in picture using OCR.
   Future<Iterable<RegExpMatch>?> runLookup(File picture, RegExp pattern) async {
     if (!Platform.isAndroid && !Platform.isIOS) throw UnimplementedError();
     final handler = TextRecognizer(script: TextRecognitionScript.latin);
@@ -273,6 +303,7 @@ abstract class Device {
     return matches;
   }
 
+  /// ...
   Future<void> runReboot() async {
     await runInvoke(['shell', 'reboot']);
     await Future.delayed(const Duration(seconds: 4));
@@ -287,10 +318,12 @@ abstract class Device {
     await Future.delayed(const Duration(seconds: 8));
   }
 
+  /// ...
   Future<void> runRemove(String distant) async {
     await runInvoke(['shell', 'rm -r $distant']);
   }
 
+  /// ...
   Future<String> runRender() async {
     const command = ['shell', 'uiautomator dump'];
     const fetched = '/sdcard/window_dump.xml';
@@ -304,14 +337,17 @@ abstract class Device {
     return (await runImport(fetched))!;
   }
 
+  /// ...
   Future<void> runRepeat(String keycode, {int repeats = 1}) async {
     await runInvoke(['shell', "input keyevent \$(printf '${keycode.toUpperCase()} %.0s' \$(seq 1 $repeats))"]);
   }
 
+  /// ...
   Future<void> runReveal(DeviceSetting payload) async {
     await runInvoke(['shell', payload.payload]);
   }
 
+  /// ...
   Future<XmlElement?> runScrape(String pattern) async {
     await runRepeat('keycode_dpad_up', repeats: 100);
     var fetched = await runRender();
@@ -332,18 +368,21 @@ abstract class Device {
     return element;
   }
 
+  /// ...
   Future<String?> runScreen({String distant = '/sdcard/screenshot.png'}) async {
     await runInvoke(['shell', 'screencap', '-p', distant]);
     final fetched = await runImport(distant);
     return fetched;
   }
 
+  /// ...
   Future<List<String>?> runSearch(String pattern, {int maximum = 1}) async {
     final results = await runInvoke(['shell', 'find $pattern -maxdepth 0 2>/dev/null | head -$maximum']);
     final content = results.stdout.trim();
     return content.isNotEmpty ? content.split("\n") : null;
   }
 
+  /// ...
   Future<bool> runSelect(String pattern) async {
     final results = await runLocate(pattern);
     if (results == null) return false;
@@ -351,6 +390,7 @@ abstract class Device {
     return true;
   }
 
+  /// ...
   Future<void> runUnpack(String archive, String deposit) async {
     if (await File(archive).exists()) {
       final distant = p.join(deposit, p.basename(archive));
@@ -362,10 +402,12 @@ abstract class Device {
     }
   }
 
+  /// ...
   Future<void> runUpdate(String package) async {
     if (await File(package).exists()) await runInvoke(['install', '-r', package]);
   }
 
+  /// ...
   Future<void> runVanish(String package) async {
     if (await getSeated(package)) {
       await runFinish(package);
