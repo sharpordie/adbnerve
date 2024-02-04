@@ -74,9 +74,9 @@ class Shield extends Device {
       'com.nvidia.shieldtech.hooks',
       'com.nvidia.shieldtech.proxy',
       'com.nvidia.stats',
-      'com.nvidia.tegrazone3'
-          // Android bloatware
-          'com.android.gallery3d',
+      'com.nvidia.tegrazone3',
+      // Android bloatware
+      'com.android.gallery3d',
       'com.android.dreams.basic',
       'com.android.printspooler',
       'com.android.feedback',
@@ -114,8 +114,7 @@ class Shield extends Device {
       'com.google.android.youtube.tvmusic',
     ];
     // for (final package in factors) await runEnable(package, enabled: enabled);
-    final command =
-        enabled ? 'cmd package install-existing' : 'pm uninstall -k --user 0';
+    final command = enabled ? 'cmd package install-existing' : 'pm uninstall -k --user 0';
     for (final package in factors) {
       await runInvoke(['shell', '$command $package']);
     }
@@ -137,8 +136,7 @@ class Shield extends Device {
     }
   }
 
-  Future<void> setPictureInPicture(String payload,
-      {bool enabled = true}) async {
+  Future<void> setPictureInPicture(String payload, {bool enabled = true}) async {
     await setLanguage(DeviceLanguage.enUs);
     await runReveal(DeviceSetting.tvMainSettings);
     await runSelect('//*[@text="Apps"]');
@@ -161,13 +159,8 @@ class Shield extends Device {
     await runSelect('//*[@text="Device Preferences"]');
     await runSelect('//*[@text="Display & Sound"]');
     await runSelect('//*[@text="Resolution"]');
-    final shaping =
-        "//*[contains(@text, '{}') and contains(@text, '{}') and contains(@text, '{}')]";
-    final factors = [
-      payload.payload[0],
-      payload.payload[1],
-      payload.payload[2] ? 'Vision' : 'Hz'
-    ];
+    final shaping = "//*[contains(@text, '{}') and contains(@text, '{}') and contains(@text, '{}')]";
+    final factors = [payload.payload[0], payload.payload[1], payload.payload[2] ? 'Vision' : 'Hz'];
     final factor1 = shaping.format(factors) + "/parent::*/parent::*/node[1]";
     try {
       final target1 = await runScrape(factor1);
@@ -181,13 +174,11 @@ class Shield extends Device {
           await runRepeat('keycode_enter');
         }
         await runSelect('//*[@text="Advanced display settings"]');
-        final factor2 =
-            '//*[@text="Match content color space"]/parent::*/following-sibling::*/node';
+        final factor2 = '//*[@text="Match content color space"]/parent::*/following-sibling::*/node';
         final target2 = await runScrape(factor2);
         if (target2 != null) {
           final checked = target2.getAttribute('checked') == 'true';
-          final correct = (checked && payload.payload[2]) ||
-              (!checked && !payload.payload[2]);
+          final correct = (checked && payload.payload[2]) || (!checked && !payload.payload[2]);
           if (!correct) await runSelect(factor2);
         }
       }
@@ -214,8 +205,7 @@ class Shield extends Device {
     await runSelect('//*[@text="Display & Sound"]');
     await runSelect('//*[@text="AI upscaling"]');
     await runSelect('//*[@text="${payload.payload[0]}"]');
-    if (payload.payload[1].isNotEmpty)
-      await runSelect('//*[@text="${payload.payload[1]}"]');
+    if (payload.payload[1].isNotEmpty) await runSelect('//*[@text="${payload.payload[1]}"]');
     await runRepeat('keycode_home');
   }
 }
