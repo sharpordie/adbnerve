@@ -4,7 +4,7 @@ ADB based library for Android automation purpose.
 
 # <samp>SUPPORTS</samp>
 
-Currently supporting:
+Currently supporting these:
 
 <table>
   <tr align="center">
@@ -15,7 +15,7 @@ Currently supporting:
     <th><samp>WIN</samp></th>
     <th><samp>WEB</samp></th>
   </tr>
-  <tr align="center" height="60">
+  <tr align="center" height="50">
     <td width="9999">🟩</td>
     <td width="9999">🟥</td>
     <td width="9999">🟩</td>
@@ -27,18 +27,20 @@ Currently supporting:
 
 # <samp>PROJECTS</samp>
 
-Proudly powering:
+Proudly powering these:
 
 <table>
   <tr>
-    <td><a href="https://"><samp>grahogen</samp></a></td>
+    <td><a href="https://">grahogen</a></td>
     <td width="9999">GrapheneOS setup for minimalists</td>
   </tr>
   <tr>
-    <td><a href="https://"><samp>shihogen</samp></a></td>
+    <td><a href="https://">shihogen</a></td>
     <td width="9999">Shield setup for streamers</td>
   </tr>
 </table>
+
+# <samp>DOWNLOAD</samp>
 
 # <samp>GUIDANCE</samp>
 
