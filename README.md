@@ -2,10 +2,6 @@
 
 ADB based library for Android automation purpose, such as invoking shell commands, managing files and packages, and using xpath for element selection. It also allows for screen scraping, making it a versatile solution for both management and extraction.
 
-# <samp>DONATION</samp>
-
-# <samp>PICTURES</samp>
-
 # <samp>PROJECTS</samp>
 
 Proudly powering these:
@@ -23,20 +19,8 @@ Proudly powering these:
 
 # <samp>GUIDANCE</samp>
 
-### Update from repository
+### Import the library
 
 ```shell
 flutter pub add adbnerve --git-url https://github.com/sharpordie/adbnerve
-```
-
-# <samp>FUNDINGS</samp>
-
-Support my work by sending me some crypto.
-
-```txt
-ADA: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-BCH: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-BTC: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-ETH: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-XMR: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
