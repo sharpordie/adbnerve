@@ -4,6 +4,8 @@ ADB based library for Android automation purpose, such as invoking shell command
 
 # <samp>PLATFORM</samp>
 
+Currently supporting these:
+
 <table>
   <tr align="center">
     <th><samp>AND</samp></th>
@@ -37,8 +39,6 @@ Proudly powering these:
     <td width="9999">Shield setup for streamers</td>
   </tr>
 </table>
-
-# <samp>DOWNLOAD</samp>
 
 # <samp>GUIDANCE</samp>
 
