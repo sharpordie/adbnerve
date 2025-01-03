@@ -12,11 +12,11 @@ Proudly powering these:
 
 <table>
   <tr>
-    <td><a href="https://"><pre>grahogen</pre></a></td>
+    <td><a href="https://"><samp>grahogen</samp></a></td>
     <td width="9999">GrapheneOS setup for minimalists</td>
   </tr>
   <tr>
-    <td><a href="https://"><pre>shihogen</pre></a></td>
+    <td><a href="https://"><samp>shihogen</samp></a></td>
     <td width="9999">Shield setup for streamers</td>
   </tr>
 </table>
