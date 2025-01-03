@@ -8,6 +8,17 @@ ADB based library for Android automation purpose.
 
 # <samp>PROJECTS</samp>
 
+<table>
+  <tr>
+    <td><a href="https://"><code>grahogen</code></a></td>
+    <td width="9999">GrapheneOS setup for minimalists</td>
+  </tr>
+  <tr>
+    <td><a href="https://"><code>shihogen</code></a></td>
+    <td width="9999">Shield setup for streamers</td>
+  </tr>
+</table>
+
 # <samp>GUIDANCE</samp>
 
 ### Update from repository
