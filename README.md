@@ -8,6 +8,8 @@ ADB based library for Android automation purpose.
 
 # <samp>PROJECTS</samp>
 
+Proudly powering these:
+
 <table>
   <tr>
     <td><a href="https://"><code>grahogen</code></a></td>
