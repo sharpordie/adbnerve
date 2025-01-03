@@ -2,13 +2,32 @@
 
 ADB based library for Android automation purpose.
 
-| <samp>AND</samp> | <samp>IOS</samp> | <samp>LIN</samp> | <samp>MAC</samp> | <samp>WIN</samp> | <samp>WEB</samp> |
-| :-: | :-: | :-: | :-: | :-: | :-: |
-| <br>🟩<br><br> | <br>🟥<br><br> | <br>🟩<br><br> | <br>🟩<br><br> | <br>🟩<br><br> | <br>🟥<br><br> |
+# <samp>SUPPORTS</samp>
+
+Currently supporting:
+
+<table>
+  <tr align="center">
+    <th><samp>AND</samp></th>
+    <th><samp>IOS</samp></th>
+    <th><samp>LIN</samp></th>
+    <th><samp>MAC</samp></th>
+    <th><samp>WIN</samp></th>
+    <th><samp>WEB</samp></th>
+  </tr>
+  <tr align="center" height="60">
+    <td width="9999">🟩</td>
+    <td width="9999">🟥</td>
+    <td width="9999">🟩</td>
+    <td width="9999">🟩</td>
+    <td width="9999">🟩</td>
+    <td width="9999">🟥</td>
+  </tr>
+</table>
 
 # <samp>PROJECTS</samp>
 
-Proudly powering these:
+Proudly powering:
 
 <table>
   <tr>
