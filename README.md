@@ -2,8 +2,6 @@
 
 ADB based library for Android automation purpose, such as invoking shell commands, managing files and packages, and using xpath for element selection. It also allows for screen scraping, making it a versatile solution for both management and extraction.
 
-Currently supporting these platforms:
-
 <table>
   <tr align="center">
     <th><samp>AND</samp></th>
