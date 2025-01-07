@@ -4,19 +4,25 @@ ADB based library for Android automation purpose, such as invoking shell command
 
 ## GUIDANCE
 
-### Import the Library
+### Import library
 
 ```shell
 flutter pub add adbnerve --git-url https://github.com/sharpordie/adbnerve
 ```
 
-### Manage Packages
+### Expand archive
 
 ```dart
 
 ```
 
-### Select Element with Xpath
+### Manage packages
+
+```dart
+
+```
+
+### Select element
 
 ```dart
 
