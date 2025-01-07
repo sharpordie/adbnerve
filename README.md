@@ -15,7 +15,7 @@ Currently supporting these:
     <th><samp>WIN</samp></th>
     <th><samp>WEB</samp></th>
   </tr>
-  <tr align="center" height="60">
+  <tr align="center" height="50">
     <td width="9999">🟩</td>
     <td width="9999">🟥</td>
     <td width="9999">🟩</td>
